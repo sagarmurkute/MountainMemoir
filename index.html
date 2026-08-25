@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mountain Memoir — A cinematic exploration of Kalsubai, the highest peak in Maharashtra.">
+    <title>Mountain Memoir — Kalsubai</title>
+
+    <!-- Google Fonts: Playfair Display & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header class="site-header" id="siteHeader">
+        <nav class="navbar" aria-label="Main Navigation">
+            <div class="nav-brand">
+                <a href="#" class="brand-logo">Mountain Memoir</a>
+            </div>
+
+            <!-- Desktop Nav Links -->
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#journey" class="nav-link">Journey</a></li>
+                <li><a href="#gallery" class="nav-link">Gallery</a></li>
+            </ul>
+
+            <!-- Mobile Hamburger Button -->
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section (Phase 1) -->
+        <section class="hero-section" id="hero">
+            <!-- Parallax Background Image -->
+            <div class="hero-bg-wrapper">
+                <img src="images/hero.jpg" alt="Majestic panoramic view of Kalsubai mountain peak in Maharashtra" class="hero-bg-img" id="heroBg">
+                <div class="hero-overlay"></div>
+            </div>
+
+            <!-- Hero Main Container -->
+            <div class="hero-container">
+                <!-- Top / Overline Tag (Editorial touch) -->
+                <div class="hero-overline animate-fade-in-down">
+                    <span class="hero-tag">Western Ghats · Sahyadri Range</span>
+                </div>
+
+                <!-- Center Editorial Typography -->
+                <div class="hero-center-content">
+                    <h1 class="hero-title animate-fade-in-up delay-1">Kalsubai</h1>
+                    <div class="hero-divider animate-scale-x delay-2"></div>
+                    <p class="hero-subtitle animate-fade-in-up delay-2">The highest peak in Maharashtra</p>
+                    <span class="hero-elevation animate-fade-in delay-3">1,646 M / 5,400 FT</span>
+                </div>
+
+                <!-- Bottom Bar (Metadata & Scroll Indicator) -->
+                <div class="hero-bottom-bar animate-fade-in delay-4">
+                    <!-- Bottom Left: Location & Date -->
+                    <div class="hero-metadata">
+                        <div class="meta-item">
+                            <span class="meta-icon" aria-hidden="true">📍</span>
+                            <span class="meta-text location">Bari Village · Maharashtra</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon" aria-hidden="true">🗓️</span>
+                            <span class="meta-text date">24 August 2026</span>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Center: Animated Scroll Indicator -->
+                    <a href="#explore" class="scroll-indicator" id="scrollIndicator" aria-label="Scroll to begin exploration">
+                        <div class="mouse-icon">
+                            <span class="wheel"></span>
+                        </div>
+                        <span class="scroll-label">Scroll to begin</span>
+                    </a>
+
+                    <!-- Bottom Right Placeholder for Balance -->
+                    <div class="hero-coords" aria-hidden="true">
+                        <span>19.6012° N, 73.7083° E</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="js/app.js" defer></script>
+</body>
+</html>
