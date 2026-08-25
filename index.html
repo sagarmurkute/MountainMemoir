@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Mountain Memoir — A cinematic exploration of Kalsubai, the highest peak in Maharashtra.">
-    <title>Mountain Memoir — Kalsubai</title>
+    <meta name="description" content="Mountain Memoir — Look deep into nature. A cinematic 3D layered parallax travel experience.">
+    <title>Mountain Memoir — Nature</title>
 
-    <!-- Google Fonts: Playfair Display & Inter -->
+    <!-- Google Fonts: Montserrat & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/style.css">
@@ -25,78 +25,130 @@
                 <a href="#" class="brand-logo">Mountain Memoir</a>
             </div>
 
-            <!-- Desktop Nav Links -->
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#journey" class="nav-link">Journey</a></li>
-                <li><a href="#gallery" class="nav-link">Gallery</a></li>
-            </ul>
-
-            <!-- Mobile Hamburger Button -->
-            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
+            <!-- Top Right Navigation -->
+            <div class="nav-right">
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                    <li><a href="#tours" class="nav-link">Tours</a></li>
+                </ul>
+                <a href="#contact" class="btn-contact">Contact us</a>
+            </div>
         </nav>
     </header>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section (Phase 1) -->
-        <section class="hero-section" id="hero">
-            <!-- Parallax Background Image -->
-            <div class="hero-bg-wrapper">
-                <img src="images/hero.jpg" alt="Majestic panoramic view of Kalsubai mountain peak in Maharashtra" class="hero-bg-img" id="heroBg">
-                <div class="hero-overlay"></div>
+    <!-- Hero Section (3D Depth Experience) -->
+    <main class="hero-container" id="heroContainer">
+        
+        <!-- STAGE: 3D Layers -->
+        <div class="scene-stage" id="sceneStage">
+
+            <!-- 1. Background Landscape (Sky + Mountains) -->
+            <div class="layer layer-bg" id="layerBg">
+                <img src="images/mountain-bg.jpg" alt="Mountain sky and distant landscape" class="stage-img">
             </div>
 
-            <!-- Hero Main Container -->
-            <div class="hero-container">
-                <!-- Top / Overline Tag (Editorial touch) -->
-                <div class="hero-overline animate-fade-in-down">
-                    <span class="hero-tag">Western Ghats · Sahyadri Range</span>
+            <!-- 2. Animated Birds in the Sky -->
+            <div class="layer layer-birds" id="layerBirds" aria-hidden="true">
+                <div class="flock flock-left">
+                    <span class="bird b1"></span>
+                    <span class="bird b2"></span>
+                    <span class="bird b3"></span>
+                    <span class="bird b4"></span>
+                    <span class="bird b5"></span>
                 </div>
-
-                <!-- Center Editorial Typography -->
-                <div class="hero-center-content">
-                    <h1 class="hero-title animate-fade-in-up delay-1">Kalsubai</h1>
-                    <div class="hero-divider animate-scale-x delay-2"></div>
-                    <p class="hero-subtitle animate-fade-in-up delay-2">The highest peak in Maharashtra</p>
-                    <span class="hero-elevation animate-fade-in delay-3">1,646 M / 5,400 FT</span>
+                <div class="flock flock-right">
+                    <span class="bird b6"></span>
+                    <span class="bird b7"></span>
+                    <span class="bird b8"></span>
                 </div>
+            </div>
 
-                <!-- Bottom Bar (Metadata & Scroll Indicator) -->
-                <div class="hero-bottom-bar animate-fade-in delay-4">
-                    <!-- Bottom Left: Location & Date -->
-                    <div class="hero-metadata">
-                        <div class="meta-item">
-                            <span class="meta-icon" aria-hidden="true">📍</span>
-                            <span class="meta-text location">Bari Village · Maharashtra</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-icon" aria-hidden="true">🗓️</span>
-                            <span class="meta-text date">24 August 2026</span>
-                        </div>
-                    </div>
+            <!-- 3. Giant Center Typography (Sandwiched in the Middle) -->
+            <div class="layer layer-text" id="layerText">
+                <h1 class="giant-word" id="giantWord">NATURE</h1>
+            </div>
 
-                    <!-- Bottom Center: Animated Scroll Indicator -->
-                    <a href="#explore" class="scroll-indicator" id="scrollIndicator" aria-label="Scroll to begin exploration">
-                        <div class="mouse-icon">
-                            <span class="wheel"></span>
-                        </div>
-                        <span class="scroll-label">Scroll to begin</span>
+            <!-- 4. Foreground Mountain Ridge Cutout (Sits in Front of the Word) -->
+            <div class="layer layer-fg" id="layerFg">
+                <img src="images/mountain-fg.png" alt="Foreground mountain ridge" class="stage-img">
+            </div>
+
+        </div>
+
+        <!-- Atmospheric Vignette -->
+        <div class="hero-gradient-overlay"></div>
+
+        <!-- Foreground UI Layer -->
+        <div class="hero-ui">
+            
+            <!-- Bottom Left Editorial Block -->
+            <div class="editorial-block">
+                <h2 class="editorial-heading">Look deep into<br>nature</h2>
+                <p class="editorial-subtext">
+                    Genius has looked end<br>piqued spring. Down has
+                </p>
+
+                <!-- Interactive Angled Arrow Button -->
+                <a href="#explore" class="arrow-btn" aria-label="Explore nature">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="7" y1="17" x2="17" y2="7"></line>
+                        <polyline points="7 7 17 7 17 17"></polyline>
+                    </svg>
+                </a>
+
+                <!-- CTA Link with Right Arrow -->
+                <div class="cta-wrap">
+                    <a href="#discover" class="cta-link">
+                        <span>Discover the world of beautiful nature</span>
+                        <svg class="arrow-right-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
                     </a>
-
-                    <!-- Bottom Right Placeholder for Balance -->
-                    <div class="hero-coords" aria-hidden="true">
-                        <span>19.6012° N, 73.7083° E</span>
-                    </div>
                 </div>
             </div>
-        </section>
+
+            <!-- Bottom Right Socials & Switcher -->
+            <div class="bottom-right-bar">
+                <div class="social-icons">
+                    <!-- Twitter (X) -->
+                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Twitter">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </a>
+                    <!-- Instagram -->
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <!-- Facebook -->
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9.198 21.5h4v-8.01h3.604l.396-3.98h-4V7.5a1.5 1.5 0 0 1 1.5-1.5h2.5V2h-3.5a5.5 5.5 0 0 0-5.5 5.5v2.01h-2v3.98h2v8.01z"/>
+                        </svg>
+                    </a>
+                    <!-- Pinterest -->
+                    <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Pinterest">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0a12 12 0 0 0-4.37 23.18c-.07-.98-.13-2.5.03-3.57.14-.97 1.08-4.58 1.08-4.58s-.28-.55-.28-1.37c0-1.28.74-2.24 1.67-2.24.78 0 1.16.59 1.16 1.3 0 .79-.5 1.97-.77 3.07-.22.92.46 1.67 1.36 1.67 1.63 0 2.89-1.72 2.89-4.2 0-2.2-1.58-3.73-3.83-3.73-2.6 0-4.13 1.95-4.13 3.96 0 .79.3 1.63.68 2.09.07.09.08.17.06.26-.07.3-.24.97-.27 1.1-.04.18-.15.22-.34.13-1.28-.6-2.08-2.46-2.08-3.96 0-3.23 2.35-6.19 6.77-6.19 3.55 0 6.32 2.53 6.32 5.92 0 3.53-2.22 6.37-5.31 6.37-1.04 0-2.01-.54-2.35-1.18l-.64 2.44c-.23.89-.86 2-1.28 2.69A12 12 0 1 0 12 0z"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Vertical Pill Toggle -->
+                <button class="vertical-toggle" id="modeToggle" aria-label="Toggle mood mode">
+                    <span class="toggle-circle"></span>
+                </button>
+            </div>
+
+        </div>
     </main>
 
-    <!-- JavaScript -->
+    <!-- Vanilla JavaScript -->
     <script src="js/app.js" defer></script>
 </body>
 </html>

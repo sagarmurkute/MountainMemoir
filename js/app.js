@@ -1,128 +1,120 @@
 /**
  * ==========================================================================
- * MOUNTAIN MEMOIR — App JavaScript (Phase 1: Hero)
- * High-performance, Vanilla JS interactions & Parallax
+ * MOUNTAIN MEMOIR — 3D Parallax & Depth Controller
+ * Multi-layer physics, smooth easing interpolation & interactions
  * ==========================================================================
  */
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elements ---
-    const siteHeader = document.getElementById('siteHeader');
-    const heroBg = document.getElementById('heroBg');
-    const menuToggle = document.getElementById('menuToggle');
-    const navLinks = document.getElementById('navLinks');
-    const scrollIndicator = document.getElementById('scrollIndicator');
+    const sceneStage = document.getElementById('sceneStage');
+    const layerBg = document.getElementById('layerBg');
+    const layerBirds = document.getElementById('layerBirds');
+    const layerText = document.getElementById('layerText');
+    const layerFg = document.getElementById('layerFg');
+    const modeToggle = document.getElementById('modeToggle');
 
-    // State
-    let isMenuOpen = false;
-    let ticking = false;
-    let mouseX = 0;
-    let mouseY = 0;
+    // Physics state
     let targetX = 0;
     let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    const ease = 0.055; // Silky smooth interpolation
 
-    /**
-     * 1. Navbar Glassmorphic State on Scroll
-     */
-    const handleScroll = () => {
-        const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-
-        // Toggle scrolled class for navbar blur/solid styling
-        if (scrollPosition > 50) {
-            siteHeader.classList.add('scrolled');
-        } else {
-            siteHeader.classList.remove('scrolled');
-        }
-
-        // Parallax effect on Hero Background when user scrolls
-        if (heroBg) {
-            const speed = 0.35; // Parallax translation ratio
-            const yOffset = scrollPosition * speed;
-            // Apply parallax translateY while preserving subtle scale
-            heroBg.style.transform = `scale(1.05) translateY(${yOffset}px)`;
-        }
-
-        ticking = false;
-    };
-
-    // Passive scroll event listener for 60fps/120fps smoothness
-    window.addEventListener('scroll', () => {
-        if (!ticking) {
-            window.requestAnimationFrame(handleScroll);
-            ticking = true;
-        }
-    }, { passive: true });
-
-    /**
-     * 2. Subtle Cinematic Mouse Parallax (Desktop Only)
-     * Adds an Apple-like depth effect when hovering around the hero section
-     */
     const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
-    if (!isTouchDevice && heroBg) {
+    /**
+     * 1. Mouse Movement 3D Parallax (Desktop)
+     */
+    if (!isTouchDevice && sceneStage) {
         window.addEventListener('mousemove', (e) => {
             const { innerWidth, innerHeight } = window;
-            // Calculate normalized offset from center (-1 to 1)
-            targetX = (e.clientX / innerWidth - 0.5) * 15; // Max 15px shift
-            targetY = (e.clientY / innerHeight - 0.5) * 15;
+            // Center-normalized coordinate (-1 to 1)
+            targetX = (e.clientX / innerWidth - 0.5) * 2;
+            targetY = (e.clientY / innerHeight - 0.5) * 2;
         });
 
-        // Smooth Interpolation Loop
-        const animateMouseParallax = () => {
-            mouseX += (targetX - mouseX) * 0.05;
-            mouseY += (targetY - mouseY) * 0.05;
+        const updateParallax = () => {
+            currentX += (targetX - currentX) * ease;
+            currentY += (targetY - currentY) * ease;
 
-            const scrollOffset = (window.pageYOffset || document.documentElement.scrollTop) * 0.35;
-            heroBg.style.transform = `scale(1.06) translate(${mouseX}px, ${mouseY + scrollOffset}px)`;
+            // Background Landscape (Deep plane)
+            if (layerBg) {
+                const bgX = currentX * -10;
+                const bgY = currentY * -6;
+                layerBg.style.transform = `translate3d(${bgX}px, ${bgY}px, 0)`;
+            }
 
-            requestAnimationFrame(animateMouseParallax);
+            // Birds (Atmospheric plane)
+            if (layerBirds) {
+                const birdX = currentX * 20;
+                const birdY = currentY * 12;
+                layerBirds.style.transform = `translate3d(${birdX}px, ${birdY}px, 0)`;
+            }
+
+            // Giant "NATURE" Text (Mid plane)
+            if (layerText) {
+                const textX = currentX * -5;
+                const textY = currentY * -3;
+                layerText.style.transform = `translate(-50%, -50%) translate3d(${textX}px, ${textY}px, 0)`;
+            }
+
+            // Foreground Ridge (Near plane)
+            if (layerFg) {
+                const fgX = currentX * 10;
+                const fgY = currentY * 6;
+                layerFg.style.transform = `translate3d(${fgX}px, ${fgY}px, 0)`;
+            }
+
+            requestAnimationFrame(updateParallax);
         };
 
-        animateMouseParallax();
+        updateParallax();
     }
 
     /**
-     * 3. Mobile Navigation Drawer Toggle
+     * 2. Device Orientation Parallax for Mobile
      */
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', () => {
-            isMenuOpen = !isMenuOpen;
-            menuToggle.classList.toggle('active', isMenuOpen);
-            navLinks.classList.toggle('active', isMenuOpen);
-            menuToggle.setAttribute('aria-expanded', isMenuOpen.toString());
-            document.body.style.overflow = isMenuOpen ? 'hidden' : '';
-        });
-
-        // Close menu when a navigation link is clicked
-        const links = navLinks.querySelectorAll('.nav-link');
-        links.forEach(link => {
-            link.addEventListener('click', () => {
-                if (isMenuOpen) {
-                    isMenuOpen = false;
-                    menuToggle.classList.remove('active');
-                    navLinks.classList.remove('active');
-                    menuToggle.setAttribute('aria-expanded', 'false');
-                    document.body.style.overflow = '';
-                }
-            });
-        });
-    }
-
-    /**
-     * 4. Smooth Scroll on Scroll Indicator Click
-     */
-    if (scrollIndicator) {
-        scrollIndicator.addEventListener('click', (e) => {
-            e.preventDefault();
-            const target = document.querySelector(scrollIndicator.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                window.scrollTo({
-                    top: window.innerHeight,
-                    behavior: 'smooth'
-                });
+    if (isTouchDevice && window.DeviceOrientationEvent) {
+        window.addEventListener('deviceorientation', (e) => {
+            if (e.gamma !== null && e.beta !== null) {
+                targetX = Math.min(Math.max(e.gamma / 25, -1), 1);
+                targetY = Math.min(Math.max((e.beta - 45) / 25, -1), 1);
             }
         });
     }
+
+    /**
+     * 3. Mood Switcher Toggle
+     */
+    if (modeToggle) {
+        modeToggle.addEventListener('click', () => {
+            modeToggle.classList.toggle('toggled');
+            const active = modeToggle.classList.contains('toggled');
+
+            if (active) {
+                if (layerBg) layerBg.style.filter = 'saturate(1.2) contrast(1.08) hue-rotate(-10deg)';
+                if (layerFg) layerFg.style.filter = 'saturate(1.2) contrast(1.08) hue-rotate(-10deg)';
+            } else {
+                if (layerBg) layerBg.style.filter = 'none';
+                if (layerFg) layerFg.style.filter = 'none';
+            }
+        });
+    }
+
+    /**
+     * 4. Smooth Anchor Feedback
+     */
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (['#', '#gallery', '#tours', '#contact', '#explore', '#discover'].includes(href)) {
+                e.preventDefault();
+                link.style.transform = 'scale(0.96)';
+                setTimeout(() => {
+                    link.style.transform = '';
+                }, 140);
+            }
+        });
+    });
 });
