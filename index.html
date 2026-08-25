@@ -22,6 +22,7 @@
             --color-dark-green: #11281A;
             --color-dark-green-hover: #193B26;
             --color-accent-gold: #E5C384;
+            --color-gold-glow: rgba(229, 195, 132, 0.45);
             --color-text-primary: #F8FAFC;
             --color-text-secondary: rgba(248, 250, 252, 0.82);
             --color-text-muted: rgba(248, 250, 252, 0.55);
@@ -32,7 +33,6 @@
             --font-display: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-editorial: 'Playfair Display', Georgia, serif;
             --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --font-serif-sub: 'Cinzel', serif;
 
             /* Spacing */
             --gutter-x: clamp(1.5rem, 4.5vw, 4.5rem);
@@ -88,7 +88,125 @@
         }
 
         /* ==========================================================================
-           3. Glassmorphic Navigation
+           3. Custom Interactive Cursor System
+           ========================================================================== */
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            pointer-events: none;
+            user-select: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .custom-cursor.active {
+            opacity: 1;
+        }
+
+        /* Central Dot */
+        .cursor-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 6px;
+            height: 6px;
+            background-color: var(--color-accent-gold);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.2s var(--ease-smooth), opacity 0.2s ease, background-color 0.2s ease;
+        }
+
+        /* Outer Follower Ring */
+        .cursor-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 36px;
+            height: 36px;
+            border: 1.5px solid rgba(248, 250, 252, 0.45);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.35s var(--ease-out-expo),
+                        height 0.35s var(--ease-out-expo),
+                        border-color 0.35s ease,
+                        background-color 0.35s ease,
+                        box-shadow 0.35s ease,
+                        backdrop-filter 0.35s ease;
+        }
+
+        /* Viewfinder Badge Label inside Cursor */
+        .cursor-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.6);
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #07120C;
+            opacity: 0;
+            white-space: nowrap;
+            transition: opacity 0.3s ease, transform 0.3s var(--ease-out-expo);
+        }
+
+        /* --- SPECIAL CURSOR STATE: HOVERING ON "KARNALA" WORD --- */
+        .custom-cursor.on-karnala .cursor-ring {
+            width: 110px;
+            height: 110px;
+            border: 2px solid var(--color-accent-gold);
+            background: rgba(229, 195, 132, 0.88);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 0 35px var(--color-gold-glow), inset 0 0 15px rgba(255, 255, 255, 0.4);
+            animation: cursorPulse 2s ease-in-out infinite alternate;
+        }
+
+        .custom-cursor.on-karnala .cursor-dot {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        .custom-cursor.on-karnala .cursor-badge {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Generic Link Hover State */
+        .custom-cursor.on-interactive .cursor-ring {
+            width: 52px;
+            height: 52px;
+            border-color: var(--color-accent-gold);
+            background-color: rgba(229, 195, 132, 0.12);
+        }
+
+        .custom-cursor.on-interactive .cursor-dot {
+            transform: translate(-50%, -50%) scale(1.4);
+            background-color: #FFFFFF;
+        }
+
+        @keyframes cursorPulse {
+            0% {
+                box-shadow: 0 0 25px var(--color-gold-glow), 0 0 0 0 rgba(229, 195, 132, 0.4);
+            }
+            100% {
+                box-shadow: 0 0 45px var(--color-gold-glow), 0 0 0 12px rgba(229, 195, 132, 0);
+            }
+        }
+
+        /* Hide custom cursor on touch screens */
+        @media (hover: none) and (pointer: coarse) {
+            .custom-cursor {
+                display: none !important;
+            }
+        }
+
+        /* ==========================================================================
+           4. Glassmorphic Navigation
            ========================================================================== */
         .site-header {
             position: fixed;
@@ -210,25 +328,8 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(22, 54, 34, 0.4);
         }
 
-        /* Mobile Hamburger */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 6px;
-            padding: 0.5rem;
-            z-index: 110;
-        }
-
-        .menu-bar {
-            width: 24px;
-            height: 2px;
-            background-color: var(--color-text-primary);
-            border-radius: 2px;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
         /* ==========================================================================
-           4. Fullscreen Hero Section (100vh)
+           5. Fullscreen Hero Section (100vh)
            ========================================================================== */
         .hero-section {
             position: relative;
@@ -291,7 +392,7 @@
         }
 
         /* ==========================================================================
-           5. Natural Flying Birds
+           6. Natural Flying Birds
            ========================================================================== */
         .birds-layer {
             position: absolute;
@@ -335,7 +436,7 @@
         .bird-svg.b8 { animation-delay: 0.6s; transform: scale(0.55) translate(15px, 6px); opacity: 0.6; }
 
         /* ==========================================================================
-           6. Hero Content Grid Layout
+           7. Hero Content Grid & Animated Word "KARNALA"
            ========================================================================== */
         .hero-container {
             position: relative;
@@ -353,7 +454,7 @@
             pointer-events: none;
         }
 
-        /* --- Center Massive Typography --- */
+        /* --- Center Massive Typography with Magnetic Interactive Letters --- */
         .hero-center-typography {
             position: absolute;
             top: 40%;
@@ -365,10 +466,13 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            pointer-events: none;
+            pointer-events: auto; /* Enable cursor hover detection */
         }
 
         .title-karnala {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
             font-family: var(--font-display);
             font-size: clamp(5.5rem, 17.5vw, 19.5rem);
             font-weight: 900;
@@ -381,6 +485,24 @@
             text-shadow: 0 8px 36px rgba(0, 0, 0, 0.45);
             opacity: 0;
             animation: heroFadeUp 1.5s var(--ease-out-expo) forwards 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* Individual Letters for Liquid Magnetic Wave Physics */
+        .title-letter {
+            display: inline-block;
+            transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+                        color 0.35s ease,
+                        text-shadow 0.35s ease;
+            will-change: transform;
+            position: relative;
+        }
+
+        /* Golden shimmer shine across the letters on hover */
+        .title-karnala:hover .title-letter {
+            color: #FFFFFF;
+            text-shadow: 0 0 30px rgba(229, 195, 132, 0.5), 0 8px 36px rgba(0, 0, 0, 0.6);
         }
 
         .hero-location-tag {
@@ -402,6 +524,7 @@
             box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
             opacity: 0;
             animation: heroFadeUp 1.5s var(--ease-out-expo) forwards 0.45s;
+            pointer-events: auto;
         }
 
         .hero-location-tag::before,
@@ -627,7 +750,7 @@
         }
 
         /* ==========================================================================
-           7. Keyframes & Animations
+           8. Keyframes & Animations
            ========================================================================== */
         @keyframes heroZoomReveal {
             0% {
@@ -717,7 +840,7 @@
         }
 
         /* ==========================================================================
-           8. Responsive Design
+           9. Responsive Design
            ========================================================================== */
         @media (max-width: 1100px) {
             .hero-bottom-grid {
@@ -833,7 +956,7 @@
 
         @media (max-width: 580px) {
             .stats-vertical-stack {
-                display: none; /* Keep super clean on small mobile */
+                display: none;
             }
 
             .hero-right-column {
@@ -843,6 +966,13 @@
     </style>
 </head>
 <body>
+
+    <!-- Custom Interactive Cursor Follower -->
+    <div class="custom-cursor" id="customCursor">
+        <span class="cursor-dot"></span>
+        <div class="cursor-ring"></div>
+        <span class="cursor-badge">EXPLORE</span>
+    </div>
 
     <!-- Header & Navigation -->
     <header class="site-header" id="siteHeader">
@@ -916,9 +1046,17 @@
             <!-- UI Container -->
             <div class="hero-container">
 
-                <!-- Center Massive Title -->
+                <!-- Center Massive Title with Interactive Letters -->
                 <div class="hero-center-typography" id="heroCenter">
-                    <h1 class="title-karnala">KARNALA</h1>
+                    <h1 class="title-karnala" id="titleKarnala" aria-label="KARNALA">
+                        <span class="title-letter">K</span>
+                        <span class="title-letter">A</span>
+                        <span class="title-letter">R</span>
+                        <span class="title-letter">N</span>
+                        <span class="title-letter">A</span>
+                        <span class="title-letter">L</span>
+                        <span class="title-letter">A</span>
+                    </h1>
                     <div class="hero-location-tag">
                         <span>NEAR PANVEL · MAHARASHTRA</span>
                     </div>
@@ -1044,7 +1182,7 @@
     </main>
 
     <!-- ==========================================================================
-       9. Vanilla JavaScript (Physics, Parallax & Interactivity)
+       10. Vanilla JavaScript (Physics, Parallax, Magnetic Letter Waves & Custom Cursor)
        ========================================================================== -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -1052,8 +1190,13 @@
             const siteHeader = document.getElementById('siteHeader');
             const heroBgStage = document.getElementById('heroBgStage');
             const heroCenter = document.getElementById('heroCenter');
+            const titleKarnala = document.getElementById('titleKarnala');
+            const titleLetters = document.querySelectorAll('.title-letter');
+            const customCursor = document.getElementById('customCursor');
 
-            // State
+            // Mouse & Cursor State
+            let mousePos = { x: -100, y: -100 };
+            let cursorCurrent = { x: -100, y: -100 };
             let targetX = 0;
             let targetY = 0;
             let currentX = 0;
@@ -1064,7 +1207,114 @@
             const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
             /**
-             * 1. Dynamic Glass Navbar on Scroll
+             * 1. Custom Interactive Cursor Physics
+             */
+            if (!isTouch && customCursor) {
+                window.addEventListener('mousemove', (e) => {
+                    mousePos.x = e.clientX;
+                    mousePos.y = e.clientY;
+                    customCursor.classList.add('active');
+
+                    // Normalized coordinates from center (-1 to 1) for parallax
+                    const { innerWidth, innerHeight } = window;
+                    targetX = (e.clientX / innerWidth - 0.5) * 2;
+                    targetY = (e.clientY / innerHeight - 0.5) * 2;
+                });
+
+                window.addEventListener('mouseleave', () => {
+                    customCursor.classList.remove('active');
+                });
+
+                // Lerp loop for cursor and parallax
+                const renderFrame = () => {
+                    // Cursor Lerp
+                    cursorCurrent.x += (mousePos.x - cursorCurrent.x) * 0.16;
+                    cursorCurrent.y += (mousePos.y - cursorCurrent.y) * 0.16;
+                    customCursor.style.transform = `translate3d(${cursorCurrent.x}px, ${cursorCurrent.y}px, 0)`;
+
+                    // Background & Title Parallax Lerp
+                    currentX += (targetX - currentX) * ease;
+                    currentY += (targetY - currentY) * ease;
+
+                    if (heroBgStage) {
+                        const bgShiftX = currentX * -14;
+                        const bgShiftY = currentY * -10;
+                        heroBgStage.style.transform = `translate3d(${bgShiftX}px, ${bgShiftY}px, 0)`;
+                    }
+
+                    if (heroCenter) {
+                        const titleX = currentX * 6;
+                        const titleY = currentY * 4;
+                        heroCenter.style.transform = `translate(calc(-50% + ${titleX}px), calc(-50% + ${titleY}px))`;
+                    }
+
+                    requestAnimationFrame(renderFrame);
+                };
+
+                renderFrame();
+
+                /**
+                 * 2. Magnetic Letter Animation when Hovering over "KARNALA"
+                 */
+                if (titleKarnala) {
+                    titleKarnala.addEventListener('mouseenter', () => {
+                        customCursor.classList.add('on-karnala');
+                    });
+
+                    titleKarnala.addEventListener('mouseleave', () => {
+                        customCursor.classList.remove('on-karnala');
+                        // Reset all letter transforms
+                        titleLetters.forEach(letter => {
+                            letter.style.transform = '';
+                        });
+                    });
+
+                    titleKarnala.addEventListener('mousemove', (e) => {
+                        const rect = titleKarnala.getBoundingClientRect();
+                        const mouseX = e.clientX;
+                        const mouseY = e.clientY;
+
+                        titleLetters.forEach(letter => {
+                            const lRect = letter.getBoundingClientRect();
+                            const letterCenter = {
+                                x: lRect.left + lRect.width / 2,
+                                y: lRect.top + lRect.height / 2
+                            };
+
+                            const dist = Math.hypot(mouseX - letterCenter.x, mouseY - letterCenter.y);
+                            const maxDist = 180; // Interaction radius
+
+                            if (dist < maxDist) {
+                                const power = 1 - (dist / maxDist);
+                                const translateY = -20 * power;
+                                const scale = 1 + (0.15 * power);
+                                const rotate = ((letterCenter.x - mouseX) / maxDist) * 12;
+                                letter.style.transform = `translateY(${translateY}px) scale(${scale}) rotate(${rotate}deg)`;
+                            } else {
+                                letter.style.transform = '';
+                            }
+                        });
+                    });
+                }
+
+                /**
+                 * 3. Interactive State for Buttons & Links
+                 */
+                const interactiveElements = document.querySelectorAll('a, button, .stat-card');
+                interactiveElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        if (!customCursor.classList.contains('on-karnala')) {
+                            customCursor.classList.add('on-interactive');
+                        }
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        customCursor.classList.remove('on-interactive');
+                    });
+                });
+            }
+
+            /**
+             * 4. Dynamic Glass Navbar on Scroll
              */
             const handleScroll = () => {
                 const scrollY = window.pageYOffset || document.documentElement.scrollTop;
@@ -1075,7 +1325,6 @@
                     siteHeader.classList.remove('scrolled');
                 }
 
-                // Smooth background parallax shift on scroll
                 if (heroBgStage) {
                     const yOffset = scrollY * 0.35;
                     heroBgStage.style.transform = `translate3d(0, ${yOffset}px, 0)`;
@@ -1092,40 +1341,7 @@
             }, { passive: true });
 
             /**
-             * 2. Smooth Mouse Movement Parallax (Desktop)
-             */
-            if (!isTouch && heroBgStage) {
-                window.addEventListener('mousemove', (e) => {
-                    const { innerWidth, innerHeight } = window;
-                    // Normalized coordinates from center (-1 to 1)
-                    targetX = (e.clientX / innerWidth - 0.5) * 2;
-                    targetY = (e.clientY / innerHeight - 0.5) * 2;
-                });
-
-                const renderParallax = () => {
-                    currentX += (targetX - currentX) * ease;
-                    currentY += (targetY - currentY) * ease;
-
-                    // Deep background movement
-                    const bgShiftX = currentX * -14;
-                    const bgShiftY = currentY * -10;
-                    heroBgStage.style.transform = `translate3d(${bgShiftX}px, ${bgShiftY}px, 0)`;
-
-                    // Subtle title counter-shift for 3D parallax depth
-                    if (heroCenter) {
-                        const titleX = currentX * 6;
-                        const titleY = currentY * 4;
-                        heroCenter.style.transform = `translate(calc(-50% + ${titleX}px), calc(-50% + ${titleY}px))`;
-                    }
-
-                    requestAnimationFrame(renderParallax);
-                };
-
-                renderParallax();
-            }
-
-            /**
-             * 3. Gyroscope Orientation for Mobile Tilt
+             * 5. Gyroscope Orientation for Mobile Tilt
              */
             if (isTouch && window.DeviceOrientationEvent) {
                 window.addEventListener('deviceorientation', (e) => {
@@ -1137,7 +1353,7 @@
             }
 
             /**
-             * 4. Interactive Anchor Smooth Click
+             * 6. Interactive Anchor Smooth Click
              */
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
